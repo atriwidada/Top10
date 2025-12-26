@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="../../assets/css/RC-stylesheet.css" />
-
 # Establishing a Modern Application Security Program
 
 The OWASP Top Ten lists are awareness documents, meant to bring awareness to the most critical risks of whichever topic they cover. They are not meant to be a complete list, only a starting place. In previous versions of this list we have prescribed starting an application security program as the best way to avoid these risks, and more. In this section we will cover how to start and build a modern application security program.
@@ -89,7 +87,7 @@ If you are starting a program from scratch, or you find OWASP SAMM or DSOMM ‘t
 
 *  Negotiate all technical requirements, including design, security, and service level agreements (SLA).
 
-*  Adopt templates and checklists, such as [OWASP Secure Software Contract Annex(1)](https://owasp.org/www-community/OWASP_Secure_Software_Contract_Annex).<br>** 1: Note** *that the annex is for US contract law, so please consult qualified legal advice before using the sample annex.*
+*  Adopt templates and checklists, such as [OWASP Secure Software Contract Annex](https://owasp.org/www-community/OWASP_Secure_Software_Contract_Annex).<br>**Note:** *The annex is for US contract law, so please consult qualified legal advice before using the sample annex.*
 
 
 ### Planning and Design Phase:

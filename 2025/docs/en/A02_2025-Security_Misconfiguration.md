@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="../../assets/css/RC-stylesheet.css" />
-
-# A02:2025 Security Misconfiguration ![icon](../../assets/TOP_10_Icons_Final_Security_Misconfiguration.png){: style="height:80px;width:80px" align="right"}
+# A02:2025 Security Misconfiguration ![icon](../assets/TOP_10_Icons_Final_Security_Misconfiguration.png){: style="height:80px;width:80px" align="right"}
 
 
 ## Background. 
@@ -84,13 +82,14 @@ Secure installation processes should be implemented, including:
 
 * A repeatable hardening process enabling the fast and easy deployment of another environment that is appropriately locked down. Development, QA, and production environments should all be configured identically, with different credentials used in each environment. This process should be automated to minimize the effort required to set up a new secure environment.
 * A minimal platform without any unnecessary features, components, documentation, or samples. Remove or do not install unused features and frameworks.
-* A task to review and update the configurations appropriate to all security notes, updates, and patches as part of the patch management process (see [A03:2025-](https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/)Software Supply Chain Failures). Review cloud storage permissions (e.g., S3 bucket permissions).
+* A task to review and update the configurations appropriate to all security notes, updates, and patches as part of the patch management process (see [A03 Software Supply Chain Failures](A03_2025-Software_Supply_Chain_Failures.md)). Review cloud storage permissions (e.g., S3 bucket permissions).
 * A segmented application architecture provides effective and secure separation between components or tenants, with segmentation, containerization, or cloud security groups (ACLs).
 * Sending security directives to clients, e.g., Security Headers.
 * An automated process to verify the effectiveness of the configurations and settings in all environments.
 * Proactively add a central configuration to intercept excessive error messages as a backup.
-* If these varifications are not automated, they should be manually verified annually at a minimum.
- 
+* If these verifications are not automated, they should be manually verified annually at a minimum.
+* Use identity federation, short-lived credentials, or role-based access mechanisms provided by the underlying platform instead of embedding static keys or secrets in code, configuration files, or pipelines.
+
 
 ## Example attack scenarios. 
 
@@ -105,14 +104,13 @@ Secure installation processes should be implemented, including:
 
 ## References.
 
-* OWASP Testing Guide: Configuration Management
-* OWASP Testing Guide: Testing for Error Codes
-* Application Security Verification Standard 5.0.0
-* NIST Guide to General Server Hardening
-* CIS Security Configuration Guides/Benchmarks
-* Amazon S3 Bucket Discovery and Enumeration
+* [OWASP Testing Guide: Configuration Management](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/README)
+* [OWASP Testing Guide: Testing for Error Codes](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/08-Testing_for_Error_Handling/01-Testing_For_Improper_Error_Handling)
+* [Application Security Verification Standard V13 Configuration](https://github.com/OWASP/ASVS/blob/master/5.0/en/0x22-V13-Configuration.md)
+* [NIST Guide to General Server Hardening](https://csrc.nist.gov/publications/detail/sp/800-123/final)
+* [CIS Security Configuration Guides/Benchmarks](https://www.cisecurity.org/cis-benchmarks/)
+* [Amazon S3 Bucket Discovery and Enumeration](https://blog.websecurify.com/2017/10/aws-s3-bucket-discovery.html)
 * ScienceDirect: Security Misconfiguration
-
 
 ## List of Mapped CWEs
 

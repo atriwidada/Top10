@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="../../assets/css/RC-stylesheet.css" />
-
-# A05:2025 Injection ![icon](../../assets/TOP_10_Icons_Final_Injection.png){: style="height:80px;width:80px" align="right"}
+# A05:2025 Injection ![icon](../assets/TOP_10_Icons_Final_Injection.png){: style="height:80px;width:80px" align="right"}
 
 ## Background. 
 
@@ -57,7 +55,7 @@ Injection falls two spots from #3 to #5 in the ranking, maintaining its position
 
 ## Description. 
 
-An injection vulnerability is a system flaw that allows an attacker to insert malicious code or commands (such as SQL or shell code) into a program’s input fields, tricking the system into executing the code or commands as if it were part of the system. This can lead to truly dire consequences. 
+An injection vulnerability is an application flaw that allows untrusted user input to be sent to an interpreter (e.g. a browser, database, the command line) and causes the interpreter to execute parts of that input as commands. 
 
 An application is vulnerable to attack when:
 
@@ -66,7 +64,7 @@ An application is vulnerable to attack when:
 * Unsanitized data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records.
 * Potentially hostile data is directly used or concatenated. The SQL or command contains the structure and malicious data in dynamic queries, commands, or stored procedures.
 
-Some of the more common injections are SQL, NoSQL, OS command, Object Relational Mapping (ORM), LDAP, and Expression Language (EL) or Object Graph Navigation Library (OGNL) injection. The concept is identical among all interpreters. Detection is best achieved by a combinatino of source code review along with automated testing (including fuzzing) of all parameters, headers, URL, cookies, JSON, SOAP, and XML data inputs. The addition of static (SAST), dynamic (DAST), and interactive (IAST) application security testing tools into the CI/CD pipeline can also be helpful to identify injection flaws before production deployment.
+Some of the more common injections are SQL, NoSQL, OS command, Object Relational Mapping (ORM), LDAP, and Expression Language (EL) or Object Graph Navigation Library (OGNL) injection. The concept is identical among all interpreters. Detection is best achieved by a combination of source code review along with automated testing (including fuzzing) of all parameters, headers, URL, cookies, JSON, SOAP, and XML data inputs. The addition of static (SAST), dynamic (DAST), and interactive (IAST) application security testing tools into the CI/CD pipeline can also be helpful to identify injection flaws before production deployment.
 
 A related class of injection vulnerabilities has become common in LLMs. These are discussed separately in the [OWASP LLM Top 10](https://genai.owasp.org/llm-top-10/), specifically [LLM01:2025 Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/).
 
@@ -86,28 +84,38 @@ When it is not possible to separate the data from commands, you can reduce threa
 
 **Warning** these techniques involve parsing and escaping complex strings, making them error-prone and not robust in the face of minor changes to the underlying system. 
 
-## Example attack scenarios. 
+## Example attack scenarios.
 
 **Scenario #1:** An application uses untrusted data in the construction of the following vulnerable SQL call:
 
 ```
-String query = "SELECT \* FROM accounts WHERE custID='" + request.getParameter("id") + "'";
+String query = "SELECT * FROM accounts WHERE custID='" + request.getParameter("id") + "'";
 ```
 
+An attacker modifies the 'id' parameter value in their browser to send: `' OR '1'='1`. For example:
 
-**Scenario #2:** Similarly, an application’s blind trust in frameworks may result in queries that are still vulnerable, (e.g., Hibernate Query Language (HQL)):
+```
+http://example.com/app/accountView?id=' OR '1'='1
+```
+
+This changes the meaning of the query to return all records from the accounts table. More dangerous attacks could modify or delete data or even invoke stored procedures.
+
+**Scenario #2:** An application's blind trust in frameworks may result in queries that are still vulnerable. For example, Hibernate Query Language (HQL):
 
 ```
 Query HQLQuery = session.createQuery("FROM accounts WHERE custID='" + request.getParameter("id") + "'");
 ```
 
-In both cases, the attacker modifies the ‘id’ parameter value in their browser to send: ' UNION SLEEP(10);--. For example:
+An attacker supplies: `' OR custID IS NOT NULL OR custID='`. This bypasses the filter and returns all accounts. While HQL has fewer dangerous functions than raw SQL, it still allows unauthorized data access when user input is concatenated into queries.
+
+**Scenario #3:** An application passes user input directly to an OS command:
 
 ```
-http://example.com/app/accountView?id=' UNION SELECT SLEEP(10);--
+String cmd = "nslookup " + request.getParameter("domain");
+Runtime.getRuntime().exec(cmd);
 ```
 
-This changes the meaning of both queries to return all the records from the accounts table. More dangerous attacks could modify or delete data or even invoke stored procedures.
+An attacker supplies `example.com; cat /etc/passwd` to execute arbitrary commands on the server.
 
 ## References.
 
